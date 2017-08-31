@@ -13,22 +13,22 @@ namespace egLogicAndFunctionAppsPOC
         [FunctionName("PayWithCashStar")]
         public static async Task<object> Run([HttpTrigger(WebHookType = "genericJson")]HttpRequestMessage req, TraceWriter log)
         {
-            log.Info($"Webhook was triggered!");
+            log.Info($"PayWithCashStar was triggered!");
 
             string jsonContent = await req.Content.ReadAsStringAsync();
             dynamic data = JsonConvert.DeserializeObject(jsonContent);
 
-            if (data.first == null || data.last == null)
+            if (data == null)
             {
                 return req.CreateResponse(HttpStatusCode.BadRequest, new
                 {
-                    error = "Please pass first/last properties in the input object"
+                    error = "invalid data"
                 });
             }
 
             return req.CreateResponse(HttpStatusCode.OK, new
             {
-                greeting = $"Hello {data.first} {data.last}!"
+                greeting = $"Paying with CashStar for order {data.purchaseID}"
             });
         }
     }
