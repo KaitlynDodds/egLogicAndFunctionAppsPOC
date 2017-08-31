@@ -10,12 +10,21 @@ using System.Text;
 
 namespace egLogicAndFunctionAppsPOC
 {
+    /**
+     * TriggerLogicApp
+     *      HttpTrigger
+     *      POST
+     * 
+     * Can be used to trigger the egLogicAppPOC
+     * 
+     */
+
     public static class TriggerLogicApp
     {
         private static string LogicAppUri = "https://prod-62.westus.logic.azure.com:443/workflows/ca3220c21d014cc3be225c5cdc0fc48b/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=pQPSZ-vYLZlVnO0UwqmmVf6Zd_XHCTXlJiCbm12Ei6o";
 
         [FunctionName("TriggerLogicApp")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequestMessage req, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]HttpRequestMessage req, TraceWriter log)
         {
             log.Info("TriggerLogicApp processed a request.");
 
@@ -31,6 +40,7 @@ namespace egLogicAndFunctionAppsPOC
             JObject json = JObject.Parse(content);
 
             /** Make HTTP call to Logic App **/
+            log.Info("Making call to logic app...");
             using (var client = new HttpClient())
             {
                 return await client.PostAsync(LogicAppUri, new StringContent( json.ToString(), Encoding.UTF8, "application/json"));
