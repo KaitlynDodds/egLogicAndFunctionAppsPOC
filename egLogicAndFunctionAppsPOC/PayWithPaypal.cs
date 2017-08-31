@@ -35,6 +35,7 @@ namespace egLogicAndFunctionAppsPOC
             //    greeting = $"Paying with Paypal for order {data.purchaseID}"
             //});
 
+            /** Used for testing retry policies **/
             return req.CreateResponse(HttpStatusCode.InternalServerError, new { error = "Testing Retry Policy" });
         }
     }
