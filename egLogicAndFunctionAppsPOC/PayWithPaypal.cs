@@ -30,13 +30,13 @@ namespace egLogicAndFunctionAppsPOC
 
             /** Data should be good, proceed with payment... **/
             log.Info("Paying with Paypal");
-            //return req.CreateResponse(HttpStatusCode.OK, new
-            //{
-            //    greeting = $"Paying with Paypal for order {data.purchaseID}"
-            //});
+            return req.CreateResponse(HttpStatusCode.OK, new
+            {
+                greeting = $"Paying with Paypal for order {data.purchaseID}"
+            });
 
             /** Used for testing retry policies **/
-            return req.CreateResponse(HttpStatusCode.InternalServerError, new { error = "Testing Retry Policy" });
+            //return req.CreateResponse(HttpStatusCode.InternalServerError, new { error = "Testing Retry Policy" });
         }
     }
 }

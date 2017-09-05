@@ -21,26 +21,16 @@ namespace egLogicAndFunctionAppsPOC
 
     public static class TriggerLogicApp
     {
-        private static string LogicAppUri = "https://prod-62.westus.logic.azure.com:443/workflows/ca3220c21d014cc3be225c5cdc0fc48b/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=pQPSZ-vYLZlVnO0UwqmmVf6Zd_XHCTXlJiCbm12Ei6o";
-
+        private static string LogicAppUri = "https://prod-20.westus.logic.azure.com:443/workflows/0bec38eae4234d988a02da6f7591b91a/triggers/manual/paths/invoke?api-version=2017-07-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=eBy1Va28OvE39YqX1G89eI0uXTmvRCCmQiHBVHc46qI";
         [FunctionName("TriggerLogicApp")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]HttpRequestMessage req, TraceWriter log)
         {
             log.Info("TriggerLogicApp processed a request.");
-
-            /** Data to be sent to the logic app **/
-            string content =
-            @"{
-                'customerID' : '149914cd-1ef1-4540-8f6f-0f25a73ba154',
-                'purchaseID' : 'bca34018b3214a1e85b079090fa770b1',
-                'timestamp' : '2017-08-31 16:29:53 UTC',
-                'paymentMethod' : 'CashStar'
-            }";
-            /** Convert to JSON **/
-            JObject json = JObject.Parse(content);
-
+            var data = await req.Content.ReadAsStringAsync();
+            JObject json = JObject.Parse(data); 
+            
             /** Make HTTP call to Logic App **/
-            log.Info("Making call to logic app...");
+            log.Info("Making call to logic app");
             using (var client = new HttpClient())
             {
                 return await client.PostAsync(LogicAppUri, new StringContent( json.ToString(), Encoding.UTF8, "application/json"));
